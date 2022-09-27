@@ -1,4 +1,11 @@
-import './App.css';
+import { useState } from "react";
+import { Container, Grid } from "@mui/material";
+import contactsJSON from "./data/contacts.json";
+import Header from "./components/Header";
+import ContactForm from "./components/ContactForm";
+import Contact from "./components/Contact";
+
+import "./App.css";
 
 // Uncomment untuk memuat daftar kontak
 // import contactsJSON from './data/contacts.json';
@@ -7,11 +14,35 @@ const App = () => {
   // untuk membuat daftar kontak bisa menggunakan MUI list
   // https://mui.com/material-ui/react-list/#folder-list
 
+
   // Masukkan contacts yang sudah didapat dalam JSON sebagai initial state
+  const [contacts, setContacts] = useState(contactsJSON);
+
   // Buatlah handler untuk menambahkan kontak baru yang akan dikirim ke ContactForm
+  const addContact = (newContact) => {
+    setContacts([newContact, ...contacts]);
+  };
+
 
   return (
     <div className="App">
+      <Header />
+
+      <Container maxWidth="lg" sx={{ marginY: "3rem" }}>
+        <Grid container rowSpacing={1} columnSpacing={4}>
+          
+          <Grid item xs={6}>
+            <h2>Add New Contact</h2>
+            <ContactForm addContact={addContact} />
+          </Grid>
+          <Grid item xs={6}>
+            <h2>List Contacts</h2>
+            {contacts.map((contact) => (
+              <Contact key={contact.email} data={contact} />
+            ))}
+          </Grid>
+        </Grid>
+      </Container>
     </div>
   );
 };
